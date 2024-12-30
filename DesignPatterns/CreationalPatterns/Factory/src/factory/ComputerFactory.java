@@ -1,8 +1,8 @@
-package Factory;
+package factory;
 
-import Modal.Computer;
-import Modal.PC;
-import Modal.Server;
+import model.Computer;
+import model.PC;
+import model.Server;
 
 public class ComputerFactory {
 

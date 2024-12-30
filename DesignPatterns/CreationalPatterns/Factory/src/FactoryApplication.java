@@ -1,5 +1,5 @@
-import Factory.ComputerFactory;
-import Modal.Computer;
+import factory.ComputerFactory;
+import model.Computer;
 
 public class FactoryApplication {
 

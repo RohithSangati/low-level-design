@@ -1,12 +1,12 @@
-package Modal;
+package model;
 
-public class Server implements Computer {
+public class PC implements Computer {
 
 	private String ram;
 	private String cpu;
 	private String hdd;
 
-	public Server(String ram, String cpu, String hdd) {
+	public PC(String ram, String cpu, String hdd) {
 		this.ram = ram;
 		this.cpu = cpu;
 		this.hdd = hdd;
