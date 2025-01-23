@@ -30,7 +30,7 @@ public class ParkingLevel {
 			VehicleType type;
 			if (i < numOfSpotsForBikes) {
 				type = VehicleType.BIKE;
-			} else if ((i + numOfSpotsForBikes) < numOfSpotsForCars) {
+			} else if (i < numOfSpotsForBikes+numOfSpotsForCars) {
 				type = VehicleType.CAR;
 			} else {
 				type = VehicleType.TRUCK;
@@ -55,6 +55,13 @@ public class ParkingLevel {
 			}
 		}
 		return false;
+	}
+	
+	public void displayAvailability() {
+		System.out.println("====================  Level - "+this.levelIndex+" =======================");
+		for(ParkingSpot parkingSpot : parkingSpots) {
+			parkingSpot.displayAvailability();
+		}
 	}
 
 }

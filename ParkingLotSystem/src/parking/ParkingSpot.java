@@ -14,10 +14,6 @@ public class ParkingSpot {
 		this.spotNumber = spotNumber;
 	}
 
-	public int getSpotNumber() {
-		return this.spotNumber;
-	}
-
 	public boolean isAvailable() {
 		return occupiedVehicle == null;
 	}
@@ -36,6 +32,12 @@ public class ParkingSpot {
 			return true;
 		}
 		return false;
+	}
+
+	public void displayAvailability() {
+		String status = this.isAvailable() ? "Available" : "Occupied";
+		System.out
+				.println("Parking Spot Number - " + this.spotNumber + " : Type - " + this.type + " : Status - " + status);
 	}
 
 }

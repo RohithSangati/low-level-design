@@ -56,4 +56,10 @@ public class ParkingLot {
 		return false;
 	}
 
+	public void displayAvailability() {
+		for(ParkingLevel level : levels) {
+			level.displayAvailability();
+		}
+	}
+
 }
