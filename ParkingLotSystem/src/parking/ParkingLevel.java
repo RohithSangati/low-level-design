@@ -16,10 +16,6 @@ public class ParkingLevel {
 		this.levelIndex = levelIndex;
 		this.allocateParkingSpots(numberOfSpots);
 	}
-	
-	public int getLevelIndex() {
-		return this.levelIndex;
-	}
 
 	private void allocateParkingSpots(int numberOfSpots) {
 		// 50% Allocation For Bikes
