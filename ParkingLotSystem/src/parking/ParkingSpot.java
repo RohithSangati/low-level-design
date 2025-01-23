@@ -18,7 +18,7 @@ public class ParkingSpot {
 		return occupiedVehicle == null;
 	}
 
-	public boolean parkVehicle(Vehicle vehicle) {
+	public synchronized boolean parkVehicle(Vehicle vehicle) {
 		if (this.isAvailable() && vehicle.getType() == this.type) {
 			this.occupiedVehicle = vehicle;
 			return true;
@@ -26,7 +26,7 @@ public class ParkingSpot {
 		return false;
 	}
 
-	public boolean unParkVehicle(Vehicle vehicle) {
+	public synchronized boolean unParkVehicle(Vehicle vehicle) {
 		if (this.occupiedVehicle == vehicle) {
 			this.occupiedVehicle = null;
 			return true;
@@ -36,8 +36,8 @@ public class ParkingSpot {
 
 	public void displayAvailability() {
 		String status = this.isAvailable() ? "Available" : "Occupied";
-		System.out
-				.println("Parking Spot Number - " + this.spotNumber + " : Type - " + this.type + " : Status - " + status);
+		System.out.println(
+				"Parking Spot Number - " + this.spotNumber + " : Type - " + this.type + " : Status - " + status);
 	}
 
 }
