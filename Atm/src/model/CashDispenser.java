@@ -27,6 +27,7 @@ public class CashDispenser {
 	}
 	
 	public void addAmount(long amount) {
+		System.out.println("Successfully added amount to the ATM");
 		this.totalAmount += amount;
 	}
 

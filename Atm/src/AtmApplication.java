@@ -1,7 +1,7 @@
 import model.ATM;
+import model.Account;
 import model.BankingService;
 import model.Card;
-import model.CashDispenser;
 
 class AtmApplication {
 
@@ -14,12 +14,16 @@ class AtmApplication {
 
 		Card card = bankingService.atmCardByCardNumber(cardNumber);
 		card.setOrResetPin(123456);
-		
+
 		atm.AddAmountToDispenser(1000);
-		
+
 		atm.startProcessing();
-		
-		
+
+		System.out.println(atm.getAmountInDispenser());
+
+		Account account = bankingService.getAccountByCardNumber(cardNumber);
+		System.out.println(account.getAmount());
+
 	}
 
 }
