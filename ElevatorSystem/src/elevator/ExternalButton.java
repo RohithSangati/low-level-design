@@ -8,8 +8,8 @@ public class ExternalButton {
 		externalButtonDispatcher = new ExternalDispatcher();
 	}
 
-	public void pressButton(int floor, Direction direction, int currentFloorNumber) {
-		this.externalButtonDispatcher.submitRequest(floor, direction,currentFloorNumber);
+	public void pressButton(Direction direction, int currentFloorNumber) {
+		this.externalButtonDispatcher.submitRequest(direction,currentFloorNumber);
 	}
 
 }

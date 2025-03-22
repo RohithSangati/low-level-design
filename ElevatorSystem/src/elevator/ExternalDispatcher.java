@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ExternalDispatcher {
 
-	public void submitRequest(int destination, Direction direction, int currentFloorNumber) {
+	public void submitRequest(Direction direction, int currentFloorNumber) {
 
 		ElevatorService elevatorService = ElevatorService.getInstance();
 
@@ -12,54 +12,120 @@ public class ExternalDispatcher {
 
 		ElevatorCar elevatorCar = null;
 
-		// For accessing idle or on the way requests
-		for (ElevatorCar eachElevatorCar : elevators) {
-			if (eachElevatorCar.getState() == State.IDLE) {
-				if (elevatorCar == null || (Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
-						.abs(eachElevatorCar.getCurrentFloor() - currentFloorNumber))) {
-					elevatorCar = eachElevatorCar;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() == State.IDLE) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
 				}
-			} else if (eachElevatorCar.getDirection() == Direction.UP) {
-				if (direction == Direction.UP && eachElevatorCar.getCurrentFloor() <= currentFloorNumber
-						&& (elevatorCar == null || (Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
-								.abs(eachElevatorCar.getCurrentFloor() - currentFloorNumber)))) {
-					elevatorCar = eachElevatorCar;
-				}
+			}
+		}
+
+		if (elevatorCar == null) {
+			if (direction == Direction.UP) {
+				elevatorCar = getSuitableCarForUP(elevators, currentFloorNumber);
 			} else {
-				if (direction == Direction.DOWN && eachElevatorCar.getCurrentFloor() >= currentFloorNumber
-						&& (elevatorCar == null || (Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
-								.abs(eachElevatorCar.getCurrentFloor() - currentFloorNumber)))) {
-					elevatorCar = eachElevatorCar;
-				}
-			}
-		}
-
-		// For accessing opposite direction requests
-		if (elevatorCar == null) {
-			for (ElevatorCar eachElevatorCar : elevators) {
-				if (eachElevatorCar.getState() == State.MOVING && eachElevatorCar.getDirection() != direction
-						&& (elevatorCar == null || (Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
-								.abs(eachElevatorCar.getCurrentFloor() - currentFloorNumber)))) {
-					elevatorCar = eachElevatorCar;
-				}
-			}
-		}
-
-		// For accessing same direction requests but passed the current floor which is
-		// the worst cases as it takes more time compared to others
-		if (elevatorCar == null) {
-			for (ElevatorCar eachElevatorCar : elevators) {
-				if (eachElevatorCar.getState() == State.MOVING && eachElevatorCar.getDirection() == direction
-						&& (elevatorCar == null || (Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) < Math
-								.abs(eachElevatorCar.getCurrentFloor() - currentFloorNumber)))) {
-					elevatorCar = eachElevatorCar;
-				}
+				elevatorCar = getSuitableCarForDown(elevators, currentFloorNumber);
 			}
 		}
 
 		ElevatorController elevatorController = elevatorCar.getElevatorController();
-		elevatorController.acceptRequest(destination, direction, elevatorCar);
+		elevatorController.acceptRequest(currentFloorNumber, direction, elevatorCar);
 
+	}
+
+	private ElevatorCar getSuitableCarForDown(List<ElevatorCar> elevators, int currentFloorNumber) {
+		ElevatorCar elevatorCar = null;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.DOWN
+					&& car.getCurrentFloor() > currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		if (elevatorCar != null)
+			return elevatorCar;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.UP
+					&& car.getCurrentFloor() > currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) < Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		if (elevatorCar != null)
+			return elevatorCar;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.UP
+					&& car.getCurrentFloor() < currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		if (elevatorCar != null)
+			return elevatorCar;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.DOWN
+					&& car.getCurrentFloor() < currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) < Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		return elevatorCar;
+	}
+
+	private ElevatorCar getSuitableCarForUP(List<ElevatorCar> elevators, int currentFloorNumber) {
+		ElevatorCar elevatorCar = null;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.UP
+					&& car.getCurrentFloor() < currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		if (elevatorCar != null)
+			return elevatorCar;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.DOWN
+					&& car.getCurrentFloor() < currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) < Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		if (elevatorCar != null)
+			return elevatorCar;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.DOWN
+					&& car.getCurrentFloor() > currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) > Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		if (elevatorCar != null)
+			return elevatorCar;
+		for (ElevatorCar car : elevators) {
+			if (car.getState() != State.IDLE && car.getDirection() == Direction.UP
+					&& car.getCurrentFloor() > currentFloorNumber) {
+				if (elevatorCar == null || Math.abs(elevatorCar.getCurrentFloor() - currentFloorNumber) < Math
+						.abs(car.getCurrentFloor() - currentFloorNumber)) {
+					elevatorCar = car;
+				}
+			}
+		}
+		return elevatorCar;
 	}
 
 }

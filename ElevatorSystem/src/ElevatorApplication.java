@@ -1,5 +1,7 @@
 import elevator.Building;
 import elevator.Direction;
+import elevator.ElevatorCar;
+import elevator.ElevatorService;
 import elevator.Floor;
 
 public class ElevatorApplication {
@@ -22,8 +24,19 @@ public class ElevatorApplication {
 		building.addFloor(floor6);
 		building.addFloor(floor7);
 		building.addFloor(floor8);
+		ElevatorService elevatorService = ElevatorService.getInstance();
+		ElevatorCar car1 = elevatorService.addElevator();
 
-		floor1.pressButton(4, Direction.UP);
+		floor7.pressButton(Direction.UP);
+		floor2.pressButton(Direction.UP);
+		floor6.pressButton(Direction.DOWN);
+		floor1.pressButton(Direction.UP);
+
+		car1.getElevatorController().controlElevator(car1);
+		floor2.pressButton(Direction.UP);
+		floor6.pressButton(Direction.DOWN);
+		floor1.pressButton(Direction.UP);
+		car1.getElevatorController().controlElevator(car1);
 
 	}
 }

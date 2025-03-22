@@ -14,8 +14,8 @@ public class Floor {
 		return externalButton;
 	}
 
-	public void pressButton(int floor, Direction direction) {
-		externalButton.pressButton(floor, direction,floorNumber);
+	public void pressButton(Direction direction) {
+		externalButton.pressButton(direction,floorNumber);
 	}
 
 	public int getFloorNumber() {

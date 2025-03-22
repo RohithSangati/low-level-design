@@ -1,5 +1,6 @@
 package elevator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ElevatorService {
@@ -9,7 +10,8 @@ public class ElevatorService {
 	private static ElevatorService elevatorServiceInstance;
 
 	private ElevatorService() {
-	}
+		elevators = new ArrayList<ElevatorCar>();
+	}	
 
 	public static ElevatorService getInstance() {
 		if (elevatorServiceInstance == null) {
@@ -20,10 +22,11 @@ public class ElevatorService {
 		return elevatorServiceInstance;
 	}
 
-	public void addElevator() {
+	public ElevatorCar addElevator() {
 		ElevatorCar elevatorCar = new ElevatorCar();
 		this.elevators.add(elevatorCar);
 		System.out.println("Successfully added elevator " + elevatorCar.getId());
+		return elevatorCar;
 	}
 
 	public List<ElevatorCar> getElevators() {
